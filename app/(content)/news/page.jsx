@@ -1,5 +1,7 @@
+
+import NewsList from '@/app/components/news-list'
 import { DUMMY_NEWS } from '@/dummy-news'
-import NewsList from '../components/news-list'
+
 
 const NewsPage = () => {
   return (

@@ -1,5 +1,6 @@
+
 import NewsList from '@/app/components/news-list';
-import { getAvailableNewsMonths, getAvailableNewsYears, getNewsForYear, getNewsForYearAndMonth } from '@/lib/news';
+import { getAvailableNewsMonths, getAvailableNewsYears, getNewsForYear, getNewsForYearAndMonth } from '@app/lib/news';
 import Link from 'next/link';
 import React from 'react';
 
