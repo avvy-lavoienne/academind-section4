@@ -3,7 +3,7 @@ import React from 'react'
 const ArchiveLayout = ({ archive, latest }) => {
   return (
     <div>
-        <h1>Archive</h1>
+        <h1>Archives</h1>
         <section id="archive-filter">
             {archive}
         </section>

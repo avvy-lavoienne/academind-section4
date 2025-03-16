@@ -1,11 +1,10 @@
 import React from 'react'
-import { DUMMY_NEWS } from '@/dummy-news'
 import Link from 'next/link'
 
 const NewsList = ({news}) => {
   return (
     <ul className="news-list">
-            {DUMMY_NEWS.map(newsItem => (
+            {news.map(newsItem => (
                 <li key={newsItem.id}>
                     <Link href={`/news/${newsItem.slug}`}>
                     <img src={`/images/news/${newsItem.image}`} alt={newsItem.title} />
