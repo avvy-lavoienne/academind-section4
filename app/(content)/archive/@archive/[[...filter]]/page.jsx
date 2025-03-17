@@ -1,64 +1,49 @@
-
-import NewsList from '@/app/components/news-list';
-import { getAvailableNewsMonths, getAvailableNewsYears, getNewsForYear, getNewsForYearAndMonth } from '@app/lib/news';
+// app/archive/[...filter]/page.jsx
 import Link from 'next/link';
-import React from 'react';
 
-const FilteredNewsPage = ({ params }) => {
-    const filter = params.filter;
-    const selectedYear = filter?.[0]
-    const selectedMonth = filter?.[1]
+import { getAvailableNewsMonths, getAvailableNewsYears } from '@/lib/news';
+import FilteredNews from '../../../../components/filtered-news';
 
-    let news;
-    let links = getAvailableNewsYears();
-    let newsContent = <p>No news found</p>
+export default async function FilteredNewsPage({ params }) {
+  const [selectedYear, selectedMonth] = params.filter || [];
 
-    if (selectedYear && !selectedMonth) {
-        news = getNewsForYear(selectedYear);
-        links = getAvailableNewsMonths(selectedYear)
+  const availableYears = await getAvailableNewsYears();
+
+  if (selectedYear && !availableYears.includes(selectedYear)) {
+    throw new Error('Invalid year parameter.');
+  }
+
+  let links = availableYears;
+
+  if (selectedYear && !selectedMonth) {
+    links = await getAvailableNewsMonths(selectedYear);
+  } else if (selectedYear && selectedMonth) {
+    const availableMonths = await getAvailableNewsMonths(selectedYear);
+    if (!availableMonths.includes(selectedMonth)) {
+      throw new Error('Invalid month parameter.');
     }
+    links = [];
+  }
 
-    if (selectedYear && selectedMonth) {
-        news = getNewsForYearAndMonth(selectedYear, selectedMonth);
-        links =  []
-    }
-    
-
-    if (news && news.length > 0) {
-        newsContent = <NewsList news={news} />;
-    }
-
-    if (
-        (selectedYear && !getAvailableNewsYears().includes(+selectedYear)) || 
-        (selectedMonth && !getAvailableNewsMonths(selectedYear).includes(+selectedMonth))
-    ) {
-        throw new Error('Invalid filter parameters.');
-    }
-
-
-    return (
-        <>
-        <header id="archive-header">
+  return (
+    <>
+      <header id="archive-header">
         <nav>
-            <ul>
-                {links.map(link => {
-                    const href = selectedYear ? `/archive/${selectedYear}/${link}` : `/archive/${link}`
-
-                return (
-                    <li key={link}>
-                        <Link href={href}>
-                    {link}
-                    </Link>
+          <ul>
+            {links.map((link) => {
+              const href = selectedYear ? `/archive/${selectedYear}/${link}` : `/archive/${link}`;
+              return (
+                <li key={link}>
+                  <Link href={href}>{link}</Link>
                 </li>
-                )
-                })}
-            </ul>
+              );
+            })}
+          </ul>
         </nav>
-    </header>
-    {newsContent}
-    </>
-      
-    );
-};
+      </header>
 
-export default FilteredNewsPage;
+      {/* Directly render your async Server Component */}
+      <FilteredNews year={selectedYear} month={selectedMonth} />
+    </>
+  );
+}
