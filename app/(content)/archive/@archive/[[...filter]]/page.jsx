@@ -1,8 +1,7 @@
-// app/archive/[...filter]/page.jsx
 import Link from 'next/link';
-
 import { getAvailableNewsMonths, getAvailableNewsYears } from '@/lib/news';
 import FilteredNews from '../../../../components/filtered-news';
+import FullscreenImage from '../../../../components/full-screen-image';  // Add this import
 
 export default async function FilteredNewsPage({ params }) {
   const [selectedYear, selectedMonth] = params.filter || [];
@@ -44,6 +43,14 @@ export default async function FilteredNewsPage({ params }) {
 
       {/* Directly render your async Server Component */}
       <FilteredNews year={selectedYear} month={selectedMonth} />
+
+      {/* Example of adding an image that opens in fullscreen */}
+      <div className="example-image-container">
+        <FullscreenImage
+          src="https://example.com/your-image.jpg"
+          alt="Example Image"
+        />
+      </div>
     </>
   );
 }

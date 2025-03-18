@@ -1,13 +1,12 @@
-"use client"
+// app/components/ModalBackdrop.jsx
+"use client";
 
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 
-const ModalBackdrop = () => {
-    const router = useRouter();
-
+const ModalBackdrop = ({ onClose }) => {
   return (
-     <div className='modal-backdrop' onClick={router.back} />
-  )
-}
+    <div className="modal-backdrop" onClick={onClose} />
+  );
+};
 
-export default ModalBackdrop
+export default ModalBackdrop;
